@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const port = 3000;
+let allUsers = [];
 
 // app.all('/vendors/*',(req,res)=>{
 //   res.status(403).json({msg: "permission denied"});
@@ -35,9 +36,14 @@ app.get('/signup', (req, res) => {
    res.sendFile('/static/index.html', { root: __dirname });
  });
 
+//init parser
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
  const verify = (req,res,next) =>{
+  let sentUser = req.body.username;
+  let sentPassword = req.body.password;
   
-  next();
 }
 
  app.post('/',verify,(req,res) => {
