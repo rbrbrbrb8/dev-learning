@@ -3,7 +3,12 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const port = 3000;
-let allUsers = [];
+let allUsers = [
+  {
+    username:"brez",
+    password:"brez"
+  }
+];
 
 // app.all('/vendors/*',(req,res)=>{
 //   res.status(403).json({msg: "permission denied"});
@@ -41,12 +46,26 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
  const verify = (req,res,next) =>{
-  let sentUser = req.body.username;
+  let sentUsername = req.body.username;
   let sentPassword = req.body.password;
-  
+  let existingUser = allUsers.find(obj => {
+    return obj.username === sentUsername});
+
+    
+  if(existingUser){
+    res.isExistingUser = (existingUser.password === sentPassword);
+  };
+
+
+  next();
 }
 
+
  app.post('/',verify,(req,res) => {
+  if(res.isExistingUser){
+    console.log("suuuuuu");
+    res.redirect(307,'/signup.html');
+  };
   
 });
 
