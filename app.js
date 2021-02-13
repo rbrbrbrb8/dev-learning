@@ -10,6 +10,8 @@ let allUsers = [
   }
 ];
 
+let isOk = false;
+
 // app.all('/vendors/*',(req,res)=>{
 //   res.status(403).json({msg: "permission denied"});
 // });
@@ -31,7 +33,10 @@ const logger = (req,res,next) =>{
 
 app.use(logger);
 
-
+// REDIRECT EXAMPLE
+// app.get('/redirect', (req, res) => {
+//   res.redirect('/signup.html');
+// });
 
 app.get('/signup', (req, res) => {
   res.sendFile('/static/signup.html', { root: __dirname });
@@ -64,10 +69,25 @@ app.use(express.urlencoded({extended: false}));
  app.post('/',verify,(req,res) => {
   if(res.isExistingUser){
     console.log("suuuuuu");
-    res.redirect(307,'/signup.html');
+    isOk=true;
+    res.redirect(301,'/welcome');
   };
   
 });
+
+app.get('/welcome', (req,res) => {
+  console.log(isOk);
+  if(isOk)
+  {
+    console.log("im here");
+    res.sendFile('/static/welcome.html', { root: __dirname });
+  }
+  else
+  {
+    res.redirect('/');
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

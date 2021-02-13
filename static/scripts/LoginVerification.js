@@ -7,6 +7,8 @@ loginVerifier.controller('LoginController',function($scope,$http){
             password: $scope.login.password
         };
         console.log(data);
-        $http.post("http://localhost:3000/",JSON.stringify(data));
+        $http.post("http://localhost:3000/",JSON.stringify(data)).then((res) => {
+            console.log(res.data);
+        });
     };
 });
